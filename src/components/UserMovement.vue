@@ -71,7 +71,7 @@
 
             submitData(e)
             {
-                this.axios.put("http://127.0.0.1:8000/user/movement/", this.post).then((result)=>{
+                this.axios.put("https://miplaticapp-api.herokuapp.com/user/movement/", this.post).then((result)=>{
                     console.warn("result",result)
                     //this.resetForm()
                 })
