@@ -184,15 +184,15 @@ background: #FDFEFE;
 
 .footer{
 
-  margin: -40px;
+  margin: 0px;
 
   padding: 0;
 
   width: 100%;
 
-  height: 10vh;
+  height: 6vh;
 
-  min-height: 100px;
+  min-height: 70px;
 
   background-color: #BBCFB9;
 
