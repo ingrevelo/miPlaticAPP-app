@@ -1,38 +1,46 @@
 <template>
-    <div id="UserMovement">
-        <div class="continer_user_transaction">
-            <h2> Transacción {{username}}</h2>
+    <div id="UserConsulta">
+        <div class="container_user_consulta">
+            <h2> Consultar {{username}}</h2>
             <form v-on:submit.prevent="submitData" >
                 <label for="movement">Movimiento:</label>
                 <select id="movement" name="movement" placeholder="" v-model="movement">
+                    <option value="None">Todos</option>
                     <option value="income">Ingreso</option>
                     <option value="outcome">Egreso</option>
                 </select> 
                 <label for="movement_type">Tipo de Movimiento:</label>
                 <select id="movement_type" name="movement_type" placeholder="" v-model="movement_type">
+                    <option value="None">Todos</option>
                     <option>Fijo</option>
                     <option>Variable</option>
                 </select> 
                 <label v-show="movement == 'outcome'" for="movement_category">Categoria:</label>
                 <label v-show="movement == 'income'" for="movement_category">Categoria:</label>
                 <select v-show="movement == 'income'" id="movement_category" name="movement_category" v-model="movement_category">
+                    <option value="None">Todos</option>
                     <option>Salario</option>
                     <option>Arriendos</option>
                     <option>Intereses</option>
                     <option>Otros</option>
                 </select>
                 <select v-show="movement == 'outcome'" id="movement_category" name="movement_category" v-model="movement_category">
+                    <option value="None">Todos</option>
                     <option>Educacion</option>
                     <option>Vivienda</option>
                     <option>Diversion y Ocio</option>
                     <option>Otros</option>
                 </select>
-                <label for="description">Descripción:</label>
-                <textarea rows="2" id="description" name="description" v-model="description"></textarea>
-                <label for="description">Monto($):</label>
-                <input type="number" min="0" id="amount" name="amount" v-model="amount">    
+                <label for="description">Monto desde($):</label>
+                <input type="number" min="0" id="amountFrom" name="amountFrom" v-model="amountFrom">
+                <label for="description">Monto hasta($):</label>
+                <input type="number" min="0" id="amountUntil" name="amountUntil" v-model="amountUntil">
+                <label for="description">Fecha desde:</label>
+                <input type="date" min="2000-01-01" max="2050-12-31" value="2000-01-01" id="dateFrom" name="dateFrom" v-model="dateFrom">
+                <label for="description">Fecha hasta:</label>
+                <input type="date" min="2000-01-01" max="2050-12-31" value="2050-12-31" id="dateUntil" name="dateUntil" v-model="dateUntil">     
                 <br><br>
-                <button type="submit">Guardar</button>  
+                <button type="submit">Buscar</button>  
                 <br><br> 
             </form>
         </div>        
@@ -40,56 +48,41 @@
 </template>
 
 <script>
-    import axios from 'axios'
-    export default {
-        name: 'UserMovement',
-        data: function(){
-            return{
-                username: null,
-                movement: null,
-                movement_type: null,
-                movement_category: null,
-                description: null,
-                amount: null                
+import axios from 'axios'
+export default {
+    name: 'UserConsulta',
+    data: function(){
+        return {
+            query: null
+        }
+    },
+    methods:{
+        getMovement: function(){
+            var self = this
+            let consulta_in = {
+                username: this.username,
+                movement: this.movement,
+                movement_type: this.movement_type,
+                movement_category: this.movement_category,
+                dateFrom: this.dateFrom,
+                dateUntil: this.dateUntil,
+                amountFrom: this.amountFrom,
+                amountUntil: this.amountUntil
             }
-        },
-        methods:{
-            submitData: function(){
-                var self = this
-                let movement_in = {
-                    username: this.username,
-                    movement: this.movement,
-                    movement_type: this.movement_type,
-                    movement_category: this.movement_category,
-                    description: this.description,
-                    amount: this.amount
-                }
-                axios.put("http://127.0.0.1:8000/user/movement/",
-                movement_in, {headers: {}})
-                .then((result) => {
-                    console.warn("result",result)
-                    alert("Registro Guardado Correctamente, Ahorro Actual: $" + result.data.actual_balance);
-                    this.clear();
-                })
-                .catch((error) => {
-                    if (error.response.status == "400")
-                        alert("ERROR 400: El gasto ingresado supera su balance actual de ahorro.");
-                        this.clear();
-                });
-            },
-            clear: function(){
-                var self = this
-                this.movement = null,
-                this.movement_type = null,
-                this.movement_category = null,
-                this.description = null,
-                this.amount = null
-            }
+            axios.get("http://127.0.0.1:8000/user/consulta/")
+            .then((result) => {
+                self.query = result.data.query
+            })
+            .catch((error) => {
+                if (error.response.status == "400")
+                    alert("ERROR 400: La búsqueda no arrojó resutlados");
+            })
         },
         created: function(){
             this.username = this.$route.params.username
         }
     }
+}
 </script>
 
 <style>
@@ -102,7 +95,7 @@
         align-items: center;
     }
 
-    .continer_user_transaction {
+    .container_user_consulta {
         border: 1px solid #666769;
         border-radius: 10px;
         width: 45%;
@@ -165,4 +158,3 @@
         font-weight: bold;
     }
 </style>
-

@@ -11,8 +11,9 @@
         <button v-on:click="init" v-if="is_auth" > Inicio </button>
         <button v-on:click="getBalance" v-if="is_auth" > Saldo </button>
         <button v-on:click="putMovement" v-if="is_auth" > Transacción </button>
+        <button v-on:click="getMovement" v-if="is_auth" > Movimientos </button>
+        <button v-on:click="logOut" v-if="is_auth" > Cerrar Sesión </button>
         <button v-if="is_auth" > Metas </button>
-        <button v-if="is_auth" > Movimientos </button>
         <button v-if="is_auth" > Tips </button>
         <button v-if="is_auth" > Salir </button>
       </nav>
@@ -39,6 +40,31 @@
     },
 
     methods: {
+      updateAuth: function(){
+        var self = this
+        self.is_auth  = localStorage.getItem('isAuth') || false
+
+        if(self.is_auth == false)
+          self.$router.push({name: "user_auth"})
+
+        else{
+          let username = localStorage.getItem("current_username")
+          self.$router.push({name: "user", params:{ username: username }})
+        }  
+      },
+
+      logIn: function(username){
+        localStorage.setItem('current_username', username)
+        localStorage.setItem('isAuth', true)
+        this.updateAuth()
+      },
+
+      logOut: function(){
+        localStorage.removeItem('isAuth')
+        localStorage.removeItem('current_username')
+        this.updateAuth()
+      },
+
       init: function(){
         if(this.$route.name != "user"){
           let username = localStorage.getItem("current_username")
@@ -56,7 +82,12 @@
           let username = localStorage.getItem("current_username")
           this.$router.push({ name:"user_movement", params:{username:username}})
         }
-      },      
+      },
+      getMovement: function(){
+        if(this.$route.name != "user_consulta"){
+          let username = localStorage.getItem("current_username")
+          this.$router.push({ name:"user_consulta", params:{username:username}})
+      }    
     },
     beforeCreate: function(){
       localStorage.setItem('current_username', 'cesarR12')
