@@ -29,6 +29,7 @@
             processAuthUser: function(){
                 var self = this
                 axios.post("https://miplaticapp-api.herokuapp.com/user/auth/", self.user_in,  {headers: {}})
+                //axios.post("http://127.0.0.1:8000/user/auth/", self.user_in,  {headers: {}})
                     .then((result) => {
                         alert("Autenticación Exitosa");
                         self.$emit('log-in', self.user_in.username)

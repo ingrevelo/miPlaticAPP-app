@@ -104,6 +104,7 @@
                     amountUntil: this.amountUntil
                 }
                 console.warn("consulta_in",consulta_in)
+                //axios.get("http://127.0.0.1:8000/user/consulta/")
                 axios.get("https://miplaticapp-api.herokuapp.com/user/consulta/")
                 .then((response) => {
                     console.warn("result",response.data)

@@ -66,6 +66,7 @@
                 }
                 console.warn("movement_in",movement_in)
                 axios.put("https://miplaticapp-api.herokuapp.com/user/movement/",
+                //axios.put("http://127.0.0.1:8000/user/movement/",
                 movement_in, {headers: {}})
                 .then((result) => {
                     console.warn("result",result)
