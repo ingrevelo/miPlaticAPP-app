@@ -1,7 +1,7 @@
 <template>
     <div id="UserMovement">
         <div class="continer_user_transaction">
-            <h2> Transacción {{username}}</h2>
+            <h2> Nuevo Movimiento </h2>
             <form v-on:submit.prevent="submitData" >
                 <label for="movement">Movimiento:</label>
                 <select id="movement" name="movement" placeholder="" v-model="movement">
@@ -64,11 +64,12 @@
                     description: this.description,
                     amount: this.amount
                 }
+                console.warn("movement_in",movement_in)
                 axios.put("https://miplaticapp-api.herokuapp.com/user/movement/",
                 movement_in, {headers: {}})
                 .then((result) => {
                     console.warn("result",result)
-                    alert("Registro Guardado Correctamente, Ahorro Actual: $" + result.data.actual_balance);
+                    alert("Movimiento Guardado Correctamente, Su Ahorro Actual es de $" + result.data.actual_balance);
                     this.clear();
                 })
                 .catch((error) => {
@@ -101,33 +102,28 @@
         justify-content: center;
         align-items: center;
     }
-
     .continer_user_transaction {
         border: 1px solid #666769;
         border-radius: 10px;
-        width: 45%;
+        width: 40%;
         height: 80%;
         display: inline-flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: initial;
         align-items: center;
         background-color: #e7e6e6;
     }
-
     #UserMovement h2{
         font-size: 30px;
         color: #434643;
     }
-
     #UserMovement form{
-        width: 40%;
+        width: 60%;
     }
-
     #UserMovement label {
         display: block;
         text-align: left;
     }
-
     #UserMovement select, input{
         height: 25px;
         width: 100%;
@@ -135,7 +131,6 @@
         margin: 5px 0;
         border: 1px solid #283747;
     }
-
     #UserMovement textarea{
         width: 100%;
         box-sizing: border-box;
@@ -143,26 +138,22 @@
         border: 1px solid #283747;
         resize: none;
     }    
-
     #UserMovement button{
         color: #D0DCD0;
         background: #434643;
-        border: 2px solid #0000;
+        border: 1px solid #0000;
         border-radius: 5px;
-        padding: 5px 10px;
-        font-size: 14px;
-        font-weight: normal;
+        padding: 10px 20px;
+        font-size: 13px;
+        font-weight: bold;
     }
-
     #UserMovement button:hover{
         color: #434643;
         background: #6BDEBB;
-        border: 2px solid #434643;
+        border: 1px solid #434643;
     }    
-
     #UserMovement span{
         color: #47E5B5;
         font-weight: bold;
     }
 </style>
-

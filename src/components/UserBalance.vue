@@ -1,7 +1,7 @@
 <template>
     <div id="UserBalance">
         <h2>{{username}}</h2>
-        <h2>Tu ahorro actual es de: <span>${{balance}} COP </span> </h2>
+        <h2>Tu ahorro actual es de <span>${{balance}} COP </span> </h2>
     </div>
 </template>
 
