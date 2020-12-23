@@ -105,7 +105,7 @@
                 }
                 console.warn("consulta_in",consulta_in)
                 //axios.get("http://127.0.0.1:8000/user/consulta/")
-                axios.get("https://miplaticapp-api.herokuapp.com/user/consulta/")
+                axios.get("https://miplaticapp-api.herokuapp.com/user/consulta/", consulta_in)
                 .then((response) => {
                     console.warn("result",response.data)
                     this.items = response.data
